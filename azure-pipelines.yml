@@ -17,3 +17,18 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
+
+### mavenを利用してビルド→Jfrogへのmavenリポジトリへinstall
+##############################################################################
+- task: ArtifactoryMaven@2
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'install'
+    artifactoryResolverService: 'JFrogArtifact01'
+    artifactoryDeployService: 'JFrogArtifact01'
+    targetDeployReleaseRepo: 'maven-repo'
+    targetDeploySnapshotRepo: 'maven-repo'
+    collectBuildInfo: true
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+    includeEnvVars: true
